@@ -4,7 +4,8 @@ import {
     ADD_POLL_ACTION_TYPES,
     GET_MY_POLL_ACTION_TYPES,
     ADD_CANDIDATE_ACTION_TYPES,
-    GET_CANDIDATES_ACTION_TYPES
+    GET_CANDIDATES_ACTION_TYPES,
+    GET_POLLS_ACTION_TYPES
 } from "./actionTypes";
 
 const {
@@ -23,6 +24,10 @@ const {
     GET_CANDIDATES_FUFILLED, GET_CANDIDATES_REJECTED, GET_CANDIDATES_REQUEST
 } = GET_CANDIDATES_ACTION_TYPES
 
+const {
+    GET_POLLS_FUFILLED, GET_POLLS_REJECTED, GET_POLLS_REQUEST
+} = GET_POLLS_ACTION_TYPES
+
 
 const BASE_URL = "http://127.0.0.1:7500";
 
@@ -31,7 +36,7 @@ const addPoll = (data) => {
     return async (dispatch) => {
         dispatch(addPollRequest());
         try {
-            const token = localStorage.getItem("token");
+            // const token = localStorage.getItem("token");
             const response = await axios.post(
                 `${BASE_URL}/createPoll`,
                 data,
@@ -53,7 +58,7 @@ const getMyPoll = (data) => {
     return async (dispatch) => {
         dispatch(getMyPollRequest());
         try {
-            const token = localStorage.getItem("token");
+            // const token = localStorage.getItem("token");
             const response = await axios.get(
                 `${BASE_URL}/myPolls?id=${data}`,
 
@@ -75,7 +80,7 @@ const addCandidate = (data) => {
     return async dispatch => {
         dispatch(addCandidateRequest());
         try {
-            const token = localStorage.getItem("token");
+            // const token = localStorage.getItem("token");
             const response = await axios.post(
                 `${BASE_URL}/addCandidate`,
                 data,
@@ -98,7 +103,7 @@ const getCandidates = (data) => {
     return async (dispatch) => {
         dispatch(getCandidatesRequest());
         try {
-            const token = localStorage.getItem("token");
+            // const token = localStorage.getItem("token");
             const response = await axios.get(
                 `${BASE_URL}/loadCandidates?id=${data}`,
 
@@ -112,6 +117,28 @@ const getCandidates = (data) => {
         } catch (e) {
             console.log(e);
             dispatch(getCandidatesRejected(e));
+        }
+    };
+};
+
+const getPolls = (data) => {
+    return async (dispatch) => {
+        dispatch(getPollsRequest());
+        try {
+            // const token = localStorage.getItem("token");
+            const response = await axios.get(
+                `${BASE_URL}/polls?page=${data}`,
+
+                // {
+                //     headers: {
+                //         Authorization: token
+                //     }
+                // }
+            );
+            return dispatch(getPollsFufilled(response));
+        } catch (e) {
+            console.log(e);
+            dispatch(getPollsRejected(e));
         }
     };
 };
@@ -176,5 +203,19 @@ const getCandidatesRejected = data => ({
     payload: data
 });
 
+const getPollsRequest = () => ({
+    type: GET_POLLS_REQUEST,
+});
 
-export { addPoll, getMyPoll, addCandidate, getCandidates };
+const getPollsFufilled = data => ({
+    type: GET_POLLS_FUFILLED,
+    payload: data
+});
+
+const getPollsRejected = data => ({
+    type: GET_POLLS_REJECTED,
+    payload: data
+});
+
+
+export { addPoll, getMyPoll, addCandidate, getCandidates, getPolls };

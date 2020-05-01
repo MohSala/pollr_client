@@ -104,7 +104,7 @@ export class PollDetail extends Component {
                                 <div className="row" style={{ justifyContent: "space-between" }}>
                                     {this.props.candidateDetails.map((item, i) =>
                                         <div key={i} >
-                                            <button disabled style={{ backgroundColor: item.color, padding: "15px", borderRadius: "50%" }}></button>
+                                            <button disabled style={{ backgroundColor: item.color, padding: "15px", borderRadius: "50%", border: 0, boxShadow: '1px 1px' }}></button>
                                             <h6>{item.name}</h6>
                                             <p style={{ fontSize: "10px" }}>PARTY:{!item.party ? "NONE" : item.party}</p>
                                         </div>
@@ -162,7 +162,7 @@ export class PollDetail extends Component {
                                         type="text"
                                         className="form-control"
                                         onChange={text => this.handleChange("party", text)}
-                                        placeholder="F.F.O" />
+                                        placeholder="e.g F.F.O, Software Engineer, Presido" />
                                 </div>
 
 

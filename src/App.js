@@ -8,6 +8,7 @@ import Register from './components/authentication/Register';
 import Dashboard from './components/Dashboard/Dashboard';
 import { Provider } from "react-redux";
 import { configureStore } from "./store/index";
+import Explore from './components/Explore/Explore';
 
 
 const store = configureStore();
@@ -35,6 +36,7 @@ function App() {
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
             <ProtectedRoute path='/dashboard' component={Dashboard} />
+            <ProtectedRoute path='/explore' component={Explore} />
           </Switch>
         </Router>
       </div>

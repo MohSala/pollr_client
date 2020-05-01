@@ -2,7 +2,8 @@ import {
     ADD_POLL_ACTION_TYPES,
     GET_MY_POLL_ACTION_TYPES,
     ADD_CANDIDATE_ACTION_TYPES,
-    GET_CANDIDATES_ACTION_TYPES
+    GET_CANDIDATES_ACTION_TYPES,
+    GET_POLLS_ACTION_TYPES
 } from "../actions/actionTypes";
 
 const {
@@ -21,11 +22,16 @@ const {
     GET_CANDIDATES_FUFILLED, GET_CANDIDATES_REJECTED, GET_CANDIDATES_REQUEST
 } = GET_CANDIDATES_ACTION_TYPES
 
+const {
+    GET_POLLS_FUFILLED, GET_POLLS_REJECTED, GET_POLLS_REQUEST
+} = GET_POLLS_ACTION_TYPES
+
 const initialState = {
     loading: false,
     created: false,
     fetched: false,
     data: null,
+    polls: null,
     candidate: null,
     candidates: null,
     approved: false,
@@ -117,6 +123,28 @@ const dashReducer = (state = initialState, action) => {
             }
 
         case GET_CANDIDATES_REJECTED:
+            return {
+                ...state,
+                loading: false,
+                fetched: false,
+                errorMsg: action.payload.response
+            }
+
+        case GET_POLLS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
+
+        case GET_POLLS_FUFILLED:
+            return {
+                ...state,
+                loading: false,
+                polls: action.payload,
+                fetched: true
+            }
+
+        case GET_POLLS_REJECTED:
             return {
                 ...state,
                 loading: false,

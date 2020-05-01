@@ -19,10 +19,10 @@ export class Navbar extends Component {
                     <div className="collapse navbar-collapse" id="navbarColor01">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item">
-                                <Link to='/' className="nav-link" href="#">Home <span className="sr-only">(current)</span></Link>
+                                <Link to='/dashboard' className="nav-link" href="#">Home <span className="sr-only">(current)</span></Link>
                             </li>
                             <li className="nav-item">
-                                <Link to='/' className="nav-link" href="#">Explore</Link>
+                                <Link to='/explore' className="nav-link" href="#">Explore</Link>
                             </li>
                             <li className="nav-item">
                                 <Link to='/' className="nav-link" href="#">settings</Link>
