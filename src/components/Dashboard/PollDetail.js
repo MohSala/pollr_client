@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import loader from "../../assets/loader.svg";
 import { Link, Redirect, withRouter } from 'react-router-dom'
 import { connect } from "react-redux";
-import { addCandidate } from "../../actions/dashboard";
+import { addCandidate, getCandidates } from "../../actions/dashboard";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import backgroundColors from "../Colors"
@@ -11,10 +11,15 @@ export class PollDetail extends Component {
     state = {
         name: '',
         color: backgroundColors[0],
-        candidates: [],
+        candidates: this.props.candidateDetails,
         party: '',
         errorMsg: '',
         error: false
+    }
+
+    async componentDidMount() {
+        await this.props.getCandidates(this.props.id);
+
     }
 
     notify = (text) => toast.success(text);
@@ -32,7 +37,7 @@ export class PollDetail extends Component {
         if (this.props.created) {
             this.notify("Your Candidate has been successfully added");
             // terrible hack but is necessary for now
-            this.props.history.push('/login');
+            this.props.history.push('/login')
         }
         else {
             this.setState({
@@ -192,13 +197,15 @@ export class PollDetail extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    addCandidate: data => dispatch(addCandidate(data))
+    addCandidate: data => dispatch(addCandidate(data)),
+    getCandidates: data => dispatch(getCandidates(data))
 
 })
 
 const mapStateToProps = state => ({
     loading: state.dash.loading,
     candidate: state.dash.candidate,
+    candidates: state.dash.candidates,
     fetched: state.dash.fetched,
     created: state.dash.created,
     error: state.dash.error,

@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import { Provider } from "react-redux";
 import { configureStore } from "./store/index";
 import Explore from './components/Explore/Explore';
+import VoteSuccess from './components/Explore/VoteSuccess';
 
 
 const store = configureStore();
@@ -37,6 +38,7 @@ function App() {
             <Route path='/register' component={Register} />
             <ProtectedRoute path='/dashboard' component={Dashboard} />
             <ProtectedRoute path='/explore' component={Explore} />
+            <ProtectedRoute path='/voteSuccess' component={VoteSuccess} />
           </Switch>
         </Router>
       </div>

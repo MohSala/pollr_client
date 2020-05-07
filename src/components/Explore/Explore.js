@@ -4,7 +4,7 @@ import loader from "../../assets/loader.svg";
 import beanEater from "../../assets/beanEater.svg";
 import { Link, Redirect, withRouter } from 'react-router-dom'
 import { connect } from "react-redux";
-import { getPolls, getCandidates } from "../../actions/dashboard";
+import { getPolls, getCandidates, getACandidate, getPollVotes } from "../../actions/dashboard";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
@@ -19,6 +19,8 @@ export class Explore extends Component {
         limit: 0,
         showVoteDetails: false,
         candidateDetails: [],
+        candidateObject: {},
+        chartValues: false
     }
 
     async componentDidMount() {
@@ -30,6 +32,12 @@ export class Explore extends Component {
                 currentPage: this.props.polls.data.meta.page + 1,
                 limit: this.props.polls.data.meta.limit,
                 total: this.props.polls.data.meta.total
+            })
+        }
+        else {
+            this.setState({
+                error: true,
+                // errorMsg: this.props.errorMsg.data.message
             })
         }
     }
@@ -51,9 +59,19 @@ export class Explore extends Component {
 
     handleClick = async (e, data) => {
         // access to e.target here
+        const userId = localStorage.getItem("userId");
+        await this.props.getACandidate(userId, data._id);
         await this.props.getCandidates(data._id);
+        await this.props.getPollVotes(data._id);
         if (this.props.fetched) {
-            this.setState({ showVoteDetails: true, voteDetails: data, candidateDetails: this.props.candidates.data.data })
+            this.setState({
+                showVoteDetails: true,
+                voteDetails: data,
+                candidateDetails: this.props.candidates.data.data,
+                candidateObject: this.props.candidate.data.data,
+                chartValues: this.props.votes.data.data
+
+            })
         }
 
     }
@@ -80,11 +98,17 @@ export class Explore extends Component {
             });
         }
 
-        const { showVoteDetails, voteDetails, candidateDetails } = this.state;
+        const { chartValues, error, showVoteDetails, voteDetails, candidateDetails, candidateObject } = this.state;
 
         return (
             <div>
                 <Navbar name="Pollúr" />
+                {error &&
+                    <div className="alert alert-dismissible alert-danger">
+                        <button type="button" className="close" data-dismiss="alert">&times;</button>
+                        <strong>Oh snap!</strong> Change a few things up and try submitting again.
+</div>
+                }
                 <div className="row">
                     {/* table for explore */}
                     <div className="col-md-6">
@@ -119,7 +143,7 @@ export class Explore extends Component {
                                                     this.state.polls.map((item, i) =>
                                                         <tr key={i} className="table-light" onClick={((e) => this.handleClick(e, item))}>
                                                             {/* <th scope="row">{i + 1}</th> */}
-                                                            <td>{item.name.toUpperCase()}</td>
+                                                            <td>{item.name.toUpperCase()} <br /> <span className="badge badge-pill badge-light">{item.voteCount}VTS</span> </td>
                                                             <td>{item.category.toUpperCase()}</td>
                                                             <td> {item.type === "public" ? <span className="badge badge-success">PUBLIC</span> : <span className="badge badge-primary">PRIVATE</span>}
                                                             </td>
@@ -147,6 +171,8 @@ export class Explore extends Component {
                                     category={voteDetails.category}
                                     id={voteDetails._id}
                                     candidateDetails={candidateDetails}
+                                    candidateObject={candidateObject}
+                                    chartValues={chartValues}
                                 />
                             </div>
                         }
@@ -160,14 +186,18 @@ export class Explore extends Component {
 
 const mapDispatchToProps = dispatch => ({
     getPolls: data => dispatch(getPolls(data)),
-    getCandidates: data => dispatch(getCandidates(data))
+    getCandidates: data => dispatch(getCandidates(data)),
+    getACandidate: (data, payload) => dispatch(getACandidate(data, payload)),
+    getPollVotes: data => dispatch(getPollVotes(data))
 })
 
 const mapStateToProps = state => ({
     loading: state.dash.loading,
     polls: state.dash.polls,
     fetched: state.dash.fetched,
+    candidate: state.dash.candidate,
     candidates: state.dash.candidates,
+    votes: state.dash.votes,
     error: state.dash.error,
     errorMsg: state.dash.errorMsg
 })

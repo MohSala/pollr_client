@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Navbar from './Navbar'
 import loader from "../../assets/loader.svg";
 import beanEater from "../../assets/beanEater.svg";
+import dashboard from "../../assets/dashboard.svg"
 import { Link, Redirect, withRouter } from 'react-router-dom'
 import { connect } from "react-redux";
 import { addPoll, getMyPoll, getCandidates } from "../../actions/dashboard";
@@ -102,7 +103,7 @@ export class Dashboard extends Component {
 				{error &&
 					<div className="alert alert-dismissible alert-danger">
 						<button type="button" className="close" data-dismiss="alert">&times;</button>
-						<strong>Oh snap!</strong> <a href="#" className="alert-link">Change a few things up</a> and try submitting again.
+						<strong>Oh snap!</strong> Change a few things up and try submitting again.
 </div>
 				}
 				<div className="row">
@@ -121,30 +122,39 @@ export class Dashboard extends Component {
 								</center>
 
 							}
-							<table className="table table-hover table-responsive">
-								<thead>
-									<tr>
-										<th scope="col">S/N</th>
-										<th scope="col">Name</th>
-										<th scope="col">Category</th>
-										<th scope="col">Type</th>
-									</tr>
-								</thead>
-								<tbody>
+							{
+								currentPolls.length === 0
+									?
+									<center>
+										<img src={dashboard} alt="vote" style={{ width: "250px", height: "250px" }} />
+										<h4 className="lead">You do not have any open polls yet. create one!!</h4>
+									</center>
 
-
-									{
-										currentPolls.map((item, i) =>
-											<tr key={i} className="table-light" onClick={((e) => this.handleClick(e, item))}>
-												<th scope="row">{i + 1}</th>
-												<td>{item.name.toUpperCase()}</td>
-												<td>{item.category.toUpperCase()}</td>
-												<td>{item.type.toUpperCase()}</td>
+									:
+									<table className="table table-hover table-responsive">
+										<thead>
+											<tr>
+												<th scope="col">S/N</th>
+												<th scope="col">Name</th>
+												<th scope="col">Category</th>
+												<th scope="col">Type</th>
 											</tr>
-										)
-									}
-								</tbody>
-							</table>
+										</thead>
+										<tbody>
+											{
+												currentPolls.map((item, i) =>
+													<tr key={i} className="table-light" onClick={((e) => this.handleClick(e, item))}>
+														<th scope="row">{i + 1}</th>
+														<td>{item.name.toUpperCase()}</td>
+														<td>{item.category.toUpperCase()}</td>
+														<td>{item.type.toUpperCase()}</td>
+													</tr>
+												)
+											}
+										</tbody>
+									</table>
+							}
+
 							<Pagination
 								postsPerPage={postsPerPage}
 								totalPosts={polls.length}

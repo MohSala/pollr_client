@@ -5,7 +5,10 @@ import {
     GET_MY_POLL_ACTION_TYPES,
     ADD_CANDIDATE_ACTION_TYPES,
     GET_CANDIDATES_ACTION_TYPES,
-    GET_POLLS_ACTION_TYPES
+    GET_POLLS_ACTION_TYPES,
+    ADD_VOTE_ACTION_TYPES,
+    GET_A_CANDIDATE_ACTION_TYPES,
+    GET_POLL_VOTES_ACTION_TYPES
 } from "./actionTypes";
 
 const {
@@ -27,6 +30,18 @@ const {
 const {
     GET_POLLS_FUFILLED, GET_POLLS_REJECTED, GET_POLLS_REQUEST
 } = GET_POLLS_ACTION_TYPES
+
+const {
+    ADD_VOTE_FUFILLED, ADD_VOTE_REJECTED, ADD_VOTE_REQUEST
+} = ADD_VOTE_ACTION_TYPES
+
+const {
+    GET_A_CANDIDATE_FUFILLED, GET_A_CANDIDATE_REJECTED, GET_A_CANDIDATE_REQUEST
+} = GET_A_CANDIDATE_ACTION_TYPES
+
+const {
+    GET_POLL_VOTES_FUFILLED, GET_POLL_VOTES_REJECTED, GET_POLL_VOTES_REQUEST
+} = GET_POLL_VOTES_ACTION_TYPES
 
 
 const BASE_URL = "http://127.0.0.1:7500";
@@ -143,6 +158,71 @@ const getPolls = (data) => {
     };
 };
 
+const addVote = (data) => {
+    return async (dispatch) => {
+        dispatch(addVoteRequest());
+        try {
+            // const token = localStorage.getItem("token");
+            const response = await axios.post(
+                `${BASE_URL}/vote`,
+                data,
+                // {
+                //     headers: {
+                //         Authorization: token
+                //     }
+                // }
+            );
+            return dispatch(addVoteFufilled(response));
+        } catch (e) {
+            console.log(e);
+            dispatch(addVoteRejected(e));
+        }
+    };
+};
+
+const getACandidate = (data, payload) => {
+    return async (dispatch) => {
+        dispatch(getACandidateRequest());
+        try {
+            // const token = localStorage.getItem("token");
+            const response = await axios.get(
+                `${BASE_URL}/getCandidate?userId=${data}&pollId=${payload}`,
+
+                // {
+                //     headers: {
+                //         Authorization: token
+                //     }
+                // }
+            );
+            return dispatch(getACandidateFufilled(response));
+        } catch (e) {
+            console.log(e);
+            dispatch(getACandidateRejected(e));
+        }
+    };
+};
+
+const getPollVotes = (data) => {
+    return async (dispatch) => {
+        dispatch(getPollVotesRequest());
+        try {
+            // const token = localStorage.getItem("token");
+            const response = await axios.get(
+                `${BASE_URL}/votes?pollId=${data}`,
+
+                // {
+                //     headers: {
+                //         Authorization: token
+                //     }
+                // }
+            );
+            return dispatch(getPollVotesFufilled(response));
+        } catch (e) {
+            console.log(e);
+            dispatch(getPollVotesRejected(e));
+        }
+    };
+};
 
 
 // ACTION CREATORS
@@ -203,6 +283,20 @@ const getCandidatesRejected = data => ({
     payload: data
 });
 
+const getACandidateRequest = () => ({
+    type: GET_A_CANDIDATE_REQUEST,
+});
+
+const getACandidateFufilled = data => ({
+    type: GET_A_CANDIDATE_FUFILLED,
+    payload: data
+});
+
+const getACandidateRejected = data => ({
+    type: GET_A_CANDIDATE_REJECTED,
+    payload: data
+});
+
 const getPollsRequest = () => ({
     type: GET_POLLS_REQUEST,
 });
@@ -217,5 +311,33 @@ const getPollsRejected = data => ({
     payload: data
 });
 
+const addVoteRequest = () => ({
+    type: ADD_VOTE_REQUEST,
+});
 
-export { addPoll, getMyPoll, addCandidate, getCandidates, getPolls };
+const addVoteFufilled = data => ({
+    type: ADD_VOTE_FUFILLED,
+    payload: data
+});
+
+const addVoteRejected = data => ({
+    type: ADD_VOTE_REJECTED,
+    payload: data
+});
+
+const getPollVotesRequest = () => ({
+    type: GET_POLL_VOTES_REQUEST,
+});
+
+const getPollVotesFufilled = data => ({
+    type: GET_POLL_VOTES_FUFILLED,
+    payload: data
+});
+
+const getPollVotesRejected = data => ({
+    type: GET_POLL_VOTES_REJECTED,
+    payload: data
+});
+
+
+export { addPoll, getMyPoll, addCandidate, getCandidates, getPolls, addVote, getACandidate, getPollVotes };

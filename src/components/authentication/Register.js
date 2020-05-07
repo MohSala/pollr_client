@@ -76,7 +76,7 @@ export class Register extends Component {
         await this.props.createAccount({ fullName, email, mobile, password });
 
         if (this.props.created) {
-            this.notify("Congrats! You've been registered successfully! Now Log In")
+            this.notify("Congrats! You've been registered successfully!")
             return this.props.history.push('/dashboard');
         } else {
             this.setState({
