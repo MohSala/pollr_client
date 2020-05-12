@@ -25,7 +25,7 @@ const {
     CREATE_ACCOUNT_REJECTED
 } = CREATE_ACCOUNT_ACTION_TYPES;
 
-const BASE_URL = "http://127.0.0.1:7500";
+const BASE_URL = "https://pollur-api-imdjxr5ywq-ez.a.run.app";
 
 // THUNKS
 const loginWithEmail = data => {
