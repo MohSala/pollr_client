@@ -46,7 +46,7 @@ const loginWithEmail = data => {
             return dispatch(loginWithEmailFulfilled(user));
         } catch (e) {
             console.log(e);
-            dispatch(loginWithEmailRejected());
+            dispatch(loginWithEmailRejected(e));
         }
     };
 };
@@ -88,7 +88,7 @@ const forgotPassword = data => {
             return dispatch(forgotPasswordFulfilled(response.data));
         } catch (e) {
             console.log(e);
-            dispatch(forgotPasswordRejected());
+            dispatch(forgotPasswordRejected(e));
         }
     };
 };
@@ -106,8 +106,9 @@ const loginWithEmailFulfilled = user => ({
     payload: user
 });
 
-const loginWithEmailRejected = () => ({
-    type: LOGIN_WITH_EMAIL_REJECTED
+const loginWithEmailRejected = (data) => ({
+    type: LOGIN_WITH_EMAIL_REJECTED,
+    payload: data
 });
 
 const forgotPasswordRequest = () => ({

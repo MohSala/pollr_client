@@ -51,7 +51,7 @@ export class Login extends Component {
         await this.props.login({ email, password });
 
         if (this.props.error) {
-            this.notify("Invalid Email/Password")
+            this.notify(this.props.errorMsg.data.message)
             this.setState({
                 error: true
             })
@@ -130,7 +130,8 @@ const mapStateToProps = state => ({
     loading: state.auth.loading,
     user: state.auth.user,
     isAuthenticated: state.auth.isAuthenticated,
-    error: state.auth.error
+    error: state.auth.error,
+    errorMsg: state.auth.errorMsg
 });
 
 export default withRouter(connect(

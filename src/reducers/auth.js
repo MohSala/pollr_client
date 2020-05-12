@@ -25,6 +25,7 @@ const {
 const initialState = {
     isAuthenticated: false,
     error: false,
+    errorMsg: null,
     resetSent: false,
     resetDone: false,
     loading: false,
@@ -64,6 +65,7 @@ const authReducer = (state = initialState, action) => {
                 loading: false,
                 isAuthenticated: false,
                 error: true,
+                errorMsg: action.payload.response
             }
 
         // case FORGOT_PASSWORD_REQUEST:
