@@ -1,0 +1,11 @@
+steps:
+    # build the container image
+    - name: 'gcr.io/cloud-builders/docker'
+      args: [ 'build', '-t', 'gcr.io/${_PROJECT_ID}/pollr-client:dev', '.' ]
+    # push the container image
+    - name: 'gcr.io/cloud-builders/docker'
+      args: [ 'push', 'gcr.io/${_PROJECT_ID}/pollr-client:dev']
+      # Deploy container image to Cloud Run
+    - name: "gcr.io/cloud-builders/gcloud"
+      args: ['run', 'deploy', 'pollr-client', '--image', 'gcr.io/${_PROJECT_ID}/pollr-client:dev', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
+  
