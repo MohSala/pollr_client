@@ -8,7 +8,8 @@ import {
     GET_POLLS_ACTION_TYPES,
     ADD_VOTE_ACTION_TYPES,
     GET_A_CANDIDATE_ACTION_TYPES,
-    GET_POLL_VOTES_ACTION_TYPES
+    GET_POLL_VOTES_ACTION_TYPES,
+    DELETE_POLL_ACTION_TYPES
 } from "./actionTypes";
 
 const {
@@ -42,6 +43,10 @@ const {
 const {
     GET_POLL_VOTES_FUFILLED, GET_POLL_VOTES_REJECTED, GET_POLL_VOTES_REQUEST
 } = GET_POLL_VOTES_ACTION_TYPES
+
+const {
+    DELETE_POLL_FUFILLED, DELETE_POLL_REJECTED, DELETE_POLL_REQUEST
+} = DELETE_POLL_ACTION_TYPES
 
 
 const BASE_URL = "http://127.0.0.1:7500";
@@ -224,6 +229,28 @@ const getPollVotes = (data) => {
     };
 };
 
+const deletePoll = (data) => {
+    return async (dispatch) => {
+        dispatch(deletePollRequest());
+        try {
+            // const token = localStorage.getItem("token");
+            const response = await axios.post(
+                `${BASE_URL}/delete`,
+                data,
+                // {
+                //     headers: {
+                //         Authorization: token
+                //     }
+                // }
+            );
+            return dispatch(deletePollFufilled(response));
+        } catch (e) {
+            console.log(e);
+            dispatch(deletePollRejected(e));
+        }
+    };
+};
+
 
 // ACTION CREATORS
 
@@ -339,5 +366,19 @@ const getPollVotesRejected = data => ({
     payload: data
 });
 
+const deletePollRequest = () => ({
+    type: DELETE_POLL_REQUEST,
+});
 
-export { addPoll, getMyPoll, addCandidate, getCandidates, getPolls, addVote, getACandidate, getPollVotes };
+const deletePollFufilled = data => ({
+    type: DELETE_POLL_FUFILLED,
+    payload: data
+});
+
+const deletePollRejected = data => ({
+    type: DELETE_POLL_REJECTED,
+    payload: data
+});
+
+
+export { addPoll, getMyPoll, addCandidate, getCandidates, getPolls, addVote, getACandidate, getPollVotes, deletePoll };

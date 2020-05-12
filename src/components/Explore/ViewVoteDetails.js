@@ -33,7 +33,6 @@ export class ViewVoteDetails extends Component {
     }
 
     renderVotedCandidate(candidate, candidates) {
-        console.log("Votes", this.props.chartValues)
         // candidateObject and candidateDetails
         // youre checking candidate id.id
         let cda;
@@ -141,7 +140,7 @@ export class ViewVoteDetails extends Component {
                             <div className="modal-body">
 
                                 <div className="form-group">
-                                    <label>
+                                    <label style={{ fontFamily: "montserrat" }}>
                                         Please confirm your vote by typing your full name <strong style={{ color: "darkgreen" }}>{this.state.userFullName}</strong>
                                     </label>
                                     <input

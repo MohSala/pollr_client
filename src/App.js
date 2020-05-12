@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import { configureStore } from "./store/index";
 import Explore from './components/Explore/Explore';
 import VoteSuccess from './components/Explore/VoteSuccess';
+import Contact from './components/Contact';
 
 
 const store = configureStore();
@@ -32,13 +33,14 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/" component={Home} render={() => (
-              <Redirect to="/" />
+              <Redirect to="/dashboard" />
             )} />
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
             <ProtectedRoute path='/dashboard' component={Dashboard} />
             <ProtectedRoute path='/explore' component={Explore} />
             <ProtectedRoute path='/voteSuccess' component={VoteSuccess} />
+            <ProtectedRoute path='/contact' component={Contact} />
           </Switch>
         </Router>
       </div>

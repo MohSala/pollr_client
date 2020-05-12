@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 import loader from "../../assets/loader.svg";
 import beanEater from "../../assets/beanEater.svg";
 import dashboard from "../../assets/dashboard.svg"
-import { Link, Redirect, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from "react-redux";
 import { addPoll, getMyPoll, getCandidates } from "../../actions/dashboard";
 import { toast } from 'react-toastify';
@@ -36,6 +36,12 @@ export class Dashboard extends Component {
 				polls: this.props.data.data.data
 			})
 		}
+		else {
+			this.setState({
+				error: true,
+				errorMsg: this.props.errorMsg.data.message
+			})
+		}
 	}
 
 	notify = (text) => toast.success(text);
@@ -60,9 +66,7 @@ export class Dashboard extends Component {
 
 	handleSubmit = async () => {
 		const { name, category, type } = this.state;
-		console.log(this.state)
 		const userId = localStorage.getItem("userId");
-		console.log(userId)
 		await this.props.addPoll({ name, category, type, userId });
 		if (this.props.created) {
 			this.notify("Your Poll has been successfully created");
@@ -82,6 +86,12 @@ export class Dashboard extends Component {
 		await this.props.getCandidates(data._id);
 		if (this.props.fetched) {
 			this.setState({ showPollDetails: true, pollDetails: data, candidateDetails: this.props.candidates.data.data })
+		}
+		else {
+			this.setState({
+				error: true,
+				errorMsg: this.props.errorMsg.data.message
+			})
 		}
 
 	}
@@ -179,6 +189,7 @@ export class Dashboard extends Component {
 									category={pollDetails.category}
 									id={pollDetails._id}
 									candidateDetails={candidateDetails}
+
 								/>
 							</div>
 						}

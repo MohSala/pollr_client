@@ -25,7 +25,7 @@ export class Navbar extends Component {
                                 <Link to='/explore' className="nav-link" href="#">Explore</Link>
                             </li>
                             <li className="nav-item">
-                                <Link to='/' className="nav-link" href="#">settings</Link>
+                                <Link to='/contact' className="nav-link" href="#">reach us</Link>
                             </li>
                         </ul>
 

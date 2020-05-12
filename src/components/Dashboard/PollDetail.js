@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import loader from "../../assets/loader.svg";
 import { Link, Redirect, withRouter } from 'react-router-dom'
 import { connect } from "react-redux";
-import { addCandidate, getCandidates } from "../../actions/dashboard";
+import { addCandidate, getCandidates, deletePoll } from "../../actions/dashboard";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import backgroundColors from "../Colors"
@@ -17,10 +17,6 @@ export class PollDetail extends Component {
         error: false
     }
 
-    async componentDidMount() {
-        await this.props.getCandidates(this.props.id);
-
-    }
 
     notify = (text) => toast.success(text);
 
@@ -63,6 +59,22 @@ export class PollDetail extends Component {
         });
     }
 
+    async deletePoll() {
+        await this.props.deletePoll({ pollId: this.props.id });
+        if (this.props.deleted) {
+            this.forceUpdate()
+            this.notify("This Poll has been successfully Deleted");
+            this.props.history.push('/login')
+        }
+        else {
+            this.setState({
+                error: true,
+                errorMsg: this.props.errorMsg.data.message
+            })
+        }
+
+    }
+
     render() {
         let typeProp;
         if (this.props.type === "public") {
@@ -71,9 +83,15 @@ export class PollDetail extends Component {
         else {
             typeProp = <span className="badge badge-primary">Private</span>
         }
-        const { candidates } = this.state;
+        const { candidates, error, errorMsg } = this.state;
         return (
             <div>
+                {error &&
+                    <div className="alert alert-dismissible alert-danger">
+                        <button type="button" className="close" data-dismiss="alert">&times;</button>
+                        <strong>Oh snap!</strong> {errorMsg}
+                    </div>
+                }
                 <div className="">
                     <h3
                         style={{
@@ -127,9 +145,29 @@ export class PollDetail extends Component {
 
                     {/* DELETE BUTTON */}
                     <div className="container" style={{ marginTop: "10px" }}>
-                        <button disabled type="button" className="btn btn-danger  btn-block" >DELETE THIS POLL</button>
+                        <button data-toggle="modal" data-target="#deleteModal" type="button" className="btn btn-danger  btn-block" >DELETE THIS POLL</button>
                     </div>
                     {/* DELETE BUTTON */}
+                </div>
+
+                <div className="modal fade" id="deleteModal">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">DELETE POLL</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <p className="lead" style={{ fontFamily: "montserrat" }}>Are you sure you want to delete this poll?</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-danger" data-dismiss="modal" onClick={() => this.deletePoll()}>delete</button>
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {/* ADD Candidate MODAL */}
@@ -191,6 +229,8 @@ export class PollDetail extends Component {
                     </div>
                 </div>
                 {/* ADD Candidate MODAL */}
+
+
             </div>
         )
     }
@@ -198,7 +238,8 @@ export class PollDetail extends Component {
 
 const mapDispatchToProps = dispatch => ({
     addCandidate: data => dispatch(addCandidate(data)),
-    getCandidates: data => dispatch(getCandidates(data))
+    getCandidates: data => dispatch(getCandidates(data)),
+    deletePoll: data => dispatch(deletePoll(data))
 
 })
 
@@ -206,6 +247,7 @@ const mapStateToProps = state => ({
     loading: state.dash.loading,
     candidate: state.dash.candidate,
     candidates: state.dash.candidates,
+    deleted: state.dash.deleted,
     fetched: state.dash.fetched,
     created: state.dash.created,
     error: state.dash.error,

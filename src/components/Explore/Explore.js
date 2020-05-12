@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import Navbar from '../Dashboard/Navbar'
-import loader from "../../assets/loader.svg";
+// import loader from "../../assets/loader.svg";
 import beanEater from "../../assets/beanEater.svg";
-import { Link, Redirect, withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { connect } from "react-redux";
 import { getPolls, getCandidates, getACandidate, getPollVotes } from "../../actions/dashboard";
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import ViewVoteDetails from './ViewVoteDetails';
@@ -53,6 +53,11 @@ export class Explore extends Component {
                 total: fetchDataForPagination.data.meta.total,
                 showVoteDetails: false
             })
+        } else {
+            this.setState({
+                error: true,
+                // errorMsg: this.props.errorMsg.data.message
+            })
         }
         // handle else later
     }
@@ -72,6 +77,11 @@ export class Explore extends Component {
                 chartValues: this.props.votes.data.data
 
             })
+        } else {
+            this.setState({
+                error: true,
+                // errorMsg: this.props.errorMsg.data.message
+            })
         }
 
     }
@@ -80,7 +90,7 @@ export class Explore extends Component {
         const pageNumbers = [];
         let renderPageNumbers;
         if (this.state.total !== null) {
-            for (let i = 1; i <= Math.ceil(this.state.total / this.state.limit); i++) {
+            for (let i = 1; i <= Math.round(this.state.total / this.state.limit); i++) {
                 pageNumbers.push(i);
             }
 
@@ -112,12 +122,21 @@ export class Explore extends Component {
                 <div className="row">
                     {/* table for explore */}
                     <div className="col-md-6">
+                    {/* search input */}
+                 <div className="form-group col-sm-6" style={{ marginTop: "10px" }}>
+                <input
+                type="text"
+                placeholder="I am looking for..."
+                className="form-control" name="email"
+                onChange={text => this.handleChange("search", text)}
+                style={{ fontFamily: 'Montserrat', border: "2px solid black" }} />
+                <button 
+                            type="button" 
+                            disabled={!this.state.message}
+                            className="btn btn-primary">SEARCH<span role="img" aria-label="rocket">🔎</span> </button>
+                </div>        
+                {/* search input */}
                         <div className="container">
-                            {/* table pagination */}
-                            <div style={{ marginTop: "8px" }} className="container row">
-                                {renderPageNumbers}
-                            </div>
-                            {/* table pagination */}
 
                             {
                                 this.props.loading ?
@@ -156,7 +175,13 @@ export class Explore extends Component {
                                         </table>
 
                                     </div>
+
                             }
+                            {/* table pagination */}
+                            <div style={{ marginTop: "8px" }} className="container row">
+                                {renderPageNumbers}
+                            </div>
+                            {/* table pagination */}
                         </div>
                     </div>
 
