@@ -18,7 +18,7 @@ RUN npm run build
 
 RUN rm -rf node_modules
     
-RUN cp -rf  /app/dist/. /usr/share/nginx/html/
+RUN cp -rf  /app/build/. /usr/share/nginx/html/
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
