@@ -43,7 +43,7 @@ export class Explore extends Component {
     }
 
     async makePageRequest(number) {
-        const fetchDataForPagination = await axios.get(`http://localhost:7500/polls?page=${number}`);
+        const fetchDataForPagination = await axios.get(`https://pollur-api-imdjxr5ywq-ez.a.run.app/polls?page=${number}`);
         if (fetchDataForPagination) {
             this.setState({
                 polls: fetchDataForPagination.data.data,
