@@ -4,7 +4,7 @@ import Navbar from '../Dashboard/Navbar'
 import beanEater from "../../assets/beanEater.svg";
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from "react-redux";
-import { getPolls, getCandidates, getACandidate, getPollVotes } from "../../actions/dashboard";
+import { getPolls, getCandidates, getACandidate, getPollVotes, searchPolls } from "../../actions/dashboard";
 // import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
@@ -20,7 +20,12 @@ export class Explore extends Component {
         showVoteDetails: false,
         candidateDetails: [],
         candidateObject: {},
-        chartValues: false
+        chartValues: false,
+        showPagination: false,
+        showReturn: false,
+        search: '',
+        errorMsg: '',
+        error: false
     }
 
     async componentDidMount() {
@@ -31,13 +36,16 @@ export class Explore extends Component {
                 totalPage: this.props.polls.data.meta.pageCount,
                 currentPage: this.props.polls.data.meta.page + 1,
                 limit: this.props.polls.data.meta.limit,
-                total: this.props.polls.data.meta.total
+                total: this.props.polls.data.meta.total,
+                showPagination: true,
+                showReturn: false
             })
         }
         else {
             this.setState({
                 error: true,
-                // errorMsg: this.props.errorMsg.data.message
+                errorMsg: this.props.errorMsg.data.message,
+                showPagination: false
             })
         }
     }
@@ -51,15 +59,16 @@ export class Explore extends Component {
                 currentPage: fetchDataForPagination.data.meta.page + 1,
                 limit: fetchDataForPagination.data.meta.limit,
                 total: fetchDataForPagination.data.meta.total,
-                showVoteDetails: false
+                showVoteDetails: false,
+                showPagination: true
             })
         } else {
             this.setState({
                 error: true,
-                // errorMsg: this.props.errorMsg.data.message
+                errorMsg: this.props.errorMsg.data.message,
+                showPagination: false
             })
         }
-        // handle else later
     }
 
     handleClick = async (e, data) => {
@@ -80,10 +89,39 @@ export class Explore extends Component {
         } else {
             this.setState({
                 error: true,
-                // errorMsg: this.props.errorMsg.data.message
+                errorMsg: this.props.errorMsg.data.message
             })
         }
 
+    }
+
+    handleChange = (name, e) => {
+        this.setState({
+            [name]: e.target.value
+        });
+    };
+
+    handleSearch = async () => {
+        const { search } = this.state;
+        await this.props.searchPolls(search);
+        if (this.props.searched) {
+            this.setState({
+                polls: this.props.data.data.data,
+                showPagination: false,
+                showReturn: true,
+                error: false
+            })
+        } else {
+            this.setState({
+                error: true,
+                errorMsg: this.props.errorMsg.data.message,
+                showPagination: true
+            })
+        }
+    }
+
+    goBack = async () => {
+        return this.componentDidMount()
     }
 
     render() {
@@ -108,7 +146,7 @@ export class Explore extends Component {
             });
         }
 
-        const { chartValues, error, showVoteDetails, voteDetails, candidateDetails, candidateObject } = this.state;
+        const { showReturn, showPagination, chartValues, error, errorMsg, showVoteDetails, voteDetails, candidateDetails, candidateObject } = this.state;
 
         return (
             <div>
@@ -116,26 +154,34 @@ export class Explore extends Component {
                 {error &&
                     <div className="alert alert-dismissible alert-danger">
                         <button type="button" className="close" data-dismiss="alert">&times;</button>
-                        <strong>Oh snap!</strong> Change a few things up and try submitting again.
-</div>
+                        <strong>Oh snap!</strong> {errorMsg}
+                    </div>
                 }
                 <div className="row">
                     {/* table for explore */}
                     <div className="col-md-6">
-                    {/* search input */}
-                 <div className="form-group col-sm-6" style={{ marginTop: "10px" }}>
-                <input
-                type="text"
-                placeholder="I am looking for..."
-                className="form-control" name="email"
-                onChange={text => this.handleChange("search", text)}
-                style={{ fontFamily: 'Montserrat', border: "2px solid black" }} />
-                <button 
-                            type="button" 
-                            disabled={!this.state.message}
-                            className="btn btn-primary">SEARCH<span role="img" aria-label="rocket">🔎</span> </button>
-                </div>        
-                {/* search input */}
+                        {/* search input */}
+                        <div className="form-group col-sm-6" style={{ marginTop: "10px" }}>
+                            <input
+                                type="text"
+                                autocomplete="off"
+                                placeholder="I am looking for..."
+                                className="form-control" name="email"
+                                onChange={text => this.handleChange("search", text)}
+                                style={{ fontFamily: 'Montserrat', border: "2px solid black" }} />
+                            <button
+                                type="button"
+                                onClick={this.handleSearch}
+                                disabled={!this.state.search}
+                                className="btn btn-primary">SEARCH<span role="img" aria-label="rocket">🔎</span> </button>
+                            {showReturn &&
+                                <button
+                                    type="button"
+                                    onClick={this.goBack}
+                                    disabled={!this.state.search}
+                                    className="btn btn-link">BACK</button>}
+                        </div>
+                        {/* search input */}
                         <div className="container">
 
                             {
@@ -179,7 +225,7 @@ export class Explore extends Component {
                             }
                             {/* table pagination */}
                             <div style={{ marginTop: "8px" }} className="container row">
-                                {renderPageNumbers}
+                                {showPagination && renderPageNumbers}
                             </div>
                             {/* table pagination */}
                         </div>
@@ -213,7 +259,8 @@ const mapDispatchToProps = dispatch => ({
     getPolls: data => dispatch(getPolls(data)),
     getCandidates: data => dispatch(getCandidates(data)),
     getACandidate: (data, payload) => dispatch(getACandidate(data, payload)),
-    getPollVotes: data => dispatch(getPollVotes(data))
+    getPollVotes: data => dispatch(getPollVotes(data)),
+    searchPolls: data => dispatch(searchPolls(data))
 })
 
 const mapStateToProps = state => ({
@@ -222,6 +269,8 @@ const mapStateToProps = state => ({
     fetched: state.dash.fetched,
     candidate: state.dash.candidate,
     candidates: state.dash.candidates,
+    searched: state.dash.searched,
+    data: state.dash.data,
     votes: state.dash.votes,
     error: state.dash.error,
     errorMsg: state.dash.errorMsg

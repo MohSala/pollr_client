@@ -9,7 +9,8 @@ import {
     ADD_VOTE_ACTION_TYPES,
     GET_A_CANDIDATE_ACTION_TYPES,
     GET_POLL_VOTES_ACTION_TYPES,
-    DELETE_POLL_ACTION_TYPES
+    DELETE_POLL_ACTION_TYPES,
+    SEARCH_POLL_ACTION_TYPES
 } from "./actionTypes";
 
 const {
@@ -47,6 +48,10 @@ const {
 const {
     DELETE_POLL_FUFILLED, DELETE_POLL_REJECTED, DELETE_POLL_REQUEST
 } = DELETE_POLL_ACTION_TYPES
+
+const {
+    SEARCH_POLL_REQUEST, SEARCH_POLL_FUFILLED, SEARCH_POLL_REJECTED
+} = SEARCH_POLL_ACTION_TYPES
 
 
 const BASE_URL = "https://pollur-api-imdjxr5ywq-ez.a.run.app";
@@ -229,6 +234,28 @@ const getPollVotes = (data) => {
     };
 };
 
+const searchPolls = (data) => {
+    return async (dispatch) => {
+        dispatch(searchPollsRequest());
+        try {
+            // const token = localStorage.getItem("token");
+            const response = await axios.get(
+                `${BASE_URL}/search?query=${data}`,
+
+                // {
+                //     headers: {
+                //         Authorization: token
+                //     }
+                // }
+            );
+            return dispatch(searchPollsFufilled(response));
+        } catch (e) {
+            console.log(e);
+            dispatch(searchPollsRejected(e));
+        }
+    };
+};
+
 const deletePoll = (data) => {
     return async (dispatch) => {
         dispatch(deletePollRequest());
@@ -380,5 +407,21 @@ const deletePollRejected = data => ({
     payload: data
 });
 
+const searchPollsRequest = () => ({
+    type: SEARCH_POLL_REQUEST,
+});
 
-export { addPoll, getMyPoll, addCandidate, getCandidates, getPolls, addVote, getACandidate, getPollVotes, deletePoll };
+const searchPollsFufilled = data => ({
+    type: SEARCH_POLL_FUFILLED,
+    payload: data
+});
+
+const searchPollsRejected = data => ({
+    type: SEARCH_POLL_REJECTED,
+    payload: data
+});
+
+
+
+
+export { addPoll, getMyPoll, addCandidate, getCandidates, getPolls, addVote, getACandidate, getPollVotes, deletePoll, searchPolls };
