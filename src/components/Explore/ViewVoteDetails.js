@@ -99,8 +99,8 @@ export class ViewVoteDetails extends Component {
                                     </div>
                                     :
                                     <div>
-                                        <h1>DESCRIPTION</h1>
-                                        <p>What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book it has?</p>
+                                        <h1>CANDIDATES</h1>
+                                        <p>Voting for a candidate means you have vetted and confirmed the credibility of your candidate, and have the utmost belief in the success of your candidate. Vote wisely! </p>
                                         <div className="row" style={{ display: "flex" }}>
                                             {
                                                 this.props.candidateDetails.map((item, i) =>

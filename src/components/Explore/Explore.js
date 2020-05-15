@@ -115,7 +115,9 @@ export class Explore extends Component {
             this.setState({
                 error: true,
                 errorMsg: this.props.errorMsg.data.message,
-                showPagination: true
+                showPagination: false,
+                showReturn: true,
+                polls: []
             })
         }
     }
@@ -158,13 +160,15 @@ export class Explore extends Component {
                     </div>
                 }
                 <div className="row">
+
                     {/* table for explore */}
                     <div className="col-md-6">
+
                         {/* search input */}
                         <div className="form-group col-sm-6" style={{ marginTop: "10px" }}>
                             <input
                                 type="text"
-                                autocomplete="off"
+                                autoComplete="off"
                                 placeholder="I am looking for..."
                                 className="form-control" name="email"
                                 onChange={text => this.handleChange("search", text)}
@@ -183,7 +187,11 @@ export class Explore extends Component {
                         </div>
                         {/* search input */}
                         <div className="container">
-
+                            {/* table pagination */}
+                            <div style={{ marginTop: "8px" }} className="container row">
+                                {showPagination && renderPageNumbers}
+                            </div>
+                            {/* table pagination */}
                             {
                                 this.props.loading ?
                                     <center>
@@ -223,11 +231,7 @@ export class Explore extends Component {
                                     </div>
 
                             }
-                            {/* table pagination */}
-                            <div style={{ marginTop: "8px" }} className="container row">
-                                {showPagination && renderPageNumbers}
-                            </div>
-                            {/* table pagination */}
+
                         </div>
                     </div>
 

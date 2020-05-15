@@ -55,7 +55,6 @@ const {
 
 
 const BASE_URL = "https://pollur-api-imdjxr5ywq-ez.a.run.app";
-
 //THUNKS
 const addPoll = (data) => {
     return async (dispatch) => {

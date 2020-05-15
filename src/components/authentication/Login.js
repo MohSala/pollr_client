@@ -91,13 +91,13 @@ export class Login extends Component {
                             placeholder="******" />
                     </div>
 
-                    <div className="row col-md-9">
+                    {/* <div className="row col-md-9">
                         <div className="col-md-6">
                             <button
                                 type="button"
                                 className="btn btn-link">Forgot Password?</button>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="row">
                         <div className="col-md-12" >
