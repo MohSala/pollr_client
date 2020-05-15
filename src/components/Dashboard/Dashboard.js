@@ -234,9 +234,9 @@ export class Dashboard extends Component {
 								<div className="form-group">
 									<label>Type(Is it Open to All or Private)</label>
 									<select disabled className="form-control" onChange={this.changeType}>
-										{/* <option>FFA or Privy</option> */}
+										<option>FFA or Privy</option>
 										<option value="public">Public</option>
-										{/* <option value="private">Private</option> */}
+										<option value="private">Private</option>
 									</select>
 								</div>
 
@@ -247,7 +247,7 @@ export class Dashboard extends Component {
 									type="button"
 									onClick={this.handleSubmit}
 									className="btn btn-success"
-									disabled={!this.state.name || !this.state.category}
+									disabled={!this.state.name || !this.state.category || !this.state.type}
 									data-dismiss="modal"
 								>
 									{!this.props.loading ? "CREATE" : <img alt='loading'
