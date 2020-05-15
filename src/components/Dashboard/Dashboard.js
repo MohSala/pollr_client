@@ -247,7 +247,7 @@ export class Dashboard extends Component {
 									type="button"
 									onClick={this.handleSubmit}
 									className="btn btn-success"
-									disabled={!this.state.name || !this.state.category || !this.state.type}
+									disabled={!this.state.name || !this.state.category}
 									data-dismiss="modal"
 								>
 									{!this.props.loading ? "CREATE" : <img alt='loading'
