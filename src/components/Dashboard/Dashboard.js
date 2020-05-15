@@ -233,7 +233,7 @@ export class Dashboard extends Component {
 
 								<div className="form-group">
 									<label>Type(Is it Open to All or Private)</label>
-									<select disabled className="form-control" onChange={this.changeType}>
+									<select className="form-control" onChange={this.changeType}>
 										<option>FFA or Privy</option>
 										<option value="public">Public</option>
 										<option value="private">Private</option>
