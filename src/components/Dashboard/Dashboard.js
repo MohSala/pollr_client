@@ -109,7 +109,7 @@ export class Dashboard extends Component {
 		const paginate = pageNumber => this.setState({ currentPage: pageNumber });
 		return (
 			<div>
-				<Navbar name="POLLÚR" />
+				<Navbar name="PLLR" />
 				{error &&
 					<div className="alert alert-dismissible alert-danger">
 						<button type="button" className="close" data-dismiss="alert">&times;</button>

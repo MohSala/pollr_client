@@ -14,7 +14,7 @@ export class Home extends Component {
                             fontStyle: "italics",
                             textDecoration: "underline",
                             textDecorationColor: "darkgreen"
-                        }}>POLLÚR</h1>
+                        }}>PLLR</h1>
                         <h3 className="display-4" style={{ fontFamily: "Montserrat", fontStyle: "italics" }}>PUBLIC AND PRIVATE POLLING MADE EASY</h3>
                         <p className="lead" style={{ fontFamily: "Montserrat", fontStyle: "italics" }}>
                             If you don't vote, you lose the right to complain

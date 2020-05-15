@@ -6,7 +6,7 @@ export class Navbar extends Component {
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-light bg-secondary">
-                    <Link to='/dashboard' className="navbar-brand">POLLÚR</Link>
+                    <Link to='/dashboard' className="navbar-brand">PLLR</Link>
                 </nav>
             </div>
         )

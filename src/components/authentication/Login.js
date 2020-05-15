@@ -68,7 +68,7 @@ export class Login extends Component {
             <div className="container">
                 <center>
 
-                    <h1 style={{ fontFamily: 'Montserrat', marginTop: "60px" }}>POLLÚR</h1>
+                    <h1 style={{ fontFamily: 'Montserrat', marginTop: "60px" }}>PLLR</h1>
 
 
                     <div className="form-group col-sm-6" style={{ marginTop: "100px" }}>

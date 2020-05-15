@@ -97,7 +97,7 @@ export class Register extends Component {
             <div className="container">
                 <center>
 
-                    <h1 style={{ fontFamily: 'Montserrat', marginTop: "60px" }}>POLLÚR</h1>
+                    <h1 style={{ fontFamily: 'Montserrat', marginTop: "60px" }}>PLLR</h1>
                     {error &&
                         <div className="alert alert-dismissible alert-danger">
                             <button type="button" className="close" data-dismiss="alert">&times;</button>

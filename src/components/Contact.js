@@ -43,7 +43,7 @@ export class Contact extends Component {
         const { error, errorMsg } = this.state;
         return (
             <div>
-                <Navbar name="Pollúr" />
+                <Navbar name="Pllr" />
                 {error &&
                     <div className="alert alert-dismissible alert-danger">
                         <button type="button" className="close" data-dismiss="alert">&times;</button>
@@ -52,7 +52,7 @@ export class Contact extends Component {
                 }
                 <div className="container center">
                     <center>
-                        <h4 style={{ fontFamily: "Montserrat", marginTop: "40px" }} > pollúr</h4>
+                        <h4 style={{ fontFamily: "Montserrat", marginTop: "40px" }} > pllr</h4>
                         <h3 style={{ fontFamily: "Montserrat", marginTop: "40px" }}>WE ARE SO EXCITED TO HEAR FROM YOU!</h3>
                         <p className="lead" style={{ fontFamily: "montserrat" }}>Thank you so much for using our product. Please reach out to us with your suggestions and we would surely hit you right back!</p>
                         <img src={contactImage} alt="contactus" style={{ maxHeight: "250px", maxWidth: "300px", marginTop: "60px" }} />

@@ -152,7 +152,7 @@ export class Explore extends Component {
 
         return (
             <div>
-                <Navbar name="Pollúr" />
+                <Navbar name="Pllr" />
                 {error &&
                     <div className="alert alert-dismissible alert-danger">
                         <button type="button" className="close" data-dismiss="alert">&times;</button>
